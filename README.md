@@ -1,0 +1,1 @@
+# elk-manager-elasticsearch-node
