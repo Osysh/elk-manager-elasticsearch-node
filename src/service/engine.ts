@@ -1,4 +1,3 @@
-import WebSocket from "ws";
 import { MODULE_NAME, STATUS, TYPES } from "../utils/status";
 import {
   MAX_START_LOADING_TIME,
@@ -7,12 +6,13 @@ import {
   MIN_STOP_LOADING_TIME,
   ON_DISPATCHER_TIME,
 } from "../utils/const";
+import { Socket } from "socket.io";
 
 export class EngineService {
   private timer: NodeJS.Timeout | undefined;
   public status: string = STATUS.OFF;
 
-  constructor(private ws: WebSocket) {}
+  constructor(private ws: Socket) {}
 
   public start() {
     console.log("Starting the engine...");
@@ -26,7 +26,8 @@ export class EngineService {
 
   private initEngine() {
     console.log("Initializing the engine...");
-    this.ws.send(
+    this.ws.emit(
+      "message",
       JSON.stringify({
         type: TYPES.ENGINE,
         module: MODULE_NAME,
@@ -42,7 +43,9 @@ export class EngineService {
 
     setTimeout(() => {
       this.timer = setInterval(() => {
-        this.ws.send(
+        console.log("Engine is running...")
+        this.ws.emit(
+          "message",
           JSON.stringify({
             type: TYPES.ENGINE,
             module: MODULE_NAME,
@@ -55,8 +58,11 @@ export class EngineService {
   }
 
   private stopEngine() {
+    clearInterval(this.timer);
     console.log("Stopping the engine...");
-    this.ws.send(
+
+    this.ws.emit(
+      "message",
       JSON.stringify({
         type: TYPES.ENGINE,
         module: MODULE_NAME,
@@ -71,8 +77,8 @@ export class EngineService {
     );
 
     setTimeout(() => {
-      clearInterval(this.timer);
-      this.ws.send(
+      this.ws.emit(
+        "message",
         JSON.stringify({
           type: TYPES.ENGINE,
           module: MODULE_NAME,

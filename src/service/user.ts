@@ -1,6 +1,6 @@
-import { WebSocket } from "ws";
 import { User } from "../types";
 import { v4 as uuidv4 } from "uuid";
+import { Socket } from "socket.io";
 
 export class UserService {
   private users: User[] = [];
@@ -22,7 +22,7 @@ export class UserService {
     return userId;
   }
 
-  public deleteUser(ws: WebSocket): string {
+  public deleteUser(ws: Socket): string {
     const user = this.users.find((user) => user.ws === ws);
 
     // Delete user from table
