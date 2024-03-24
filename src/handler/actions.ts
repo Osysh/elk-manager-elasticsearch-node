@@ -3,8 +3,9 @@ import { Action } from "../types";
 
 const handle_actions = (req: Request, res: Response) => {
   const userId = req.query.userId as string;
-  const action = req.body.action as Action;
-
+  const body = JSON.parse(req.body) as { action: Action };
+  
+  const action = body.action as Action;
   const user = req.users?.getUser(userId);
 
   switch (action) {

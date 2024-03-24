@@ -2,6 +2,6 @@ import express from "express";
 
 const router = express.Router();
 
-router.route("/actions").post();
+router.route("/action").post();
 
 export { router };
