@@ -5,6 +5,7 @@ import { WebsocketService } from "./service";
 import { UserService } from "./service/user";
 import { users_middleware, websocket_middleware } from "./middleware";
 import { apiRouter } from "./routes";
+import { logger } from "./utils/logger";
 
 const SERVER_PORT: number = parseInt(process.env.SERVER_PORT || "3010", 10);
 const SERVER_HOST: string = process.env.SERVER_HOST || "localhost";
@@ -27,5 +28,5 @@ const users = new UserService();
 const socket = new WebsocketService(httpServer, users, MAX_CONNECTION);
 
 httpServer.listen(SERVER_PORT, () => {
-  console.log(`Server is running on http://${SERVER_HOST}:${SERVER_PORT}`);
+  logger.info(`Server is running on http://${SERVER_HOST}:${SERVER_PORT}`);
 });

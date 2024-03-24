@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { Config } from "../types";
+import { logger } from "../utils/logger";
 
 const get = (req: Request, res: Response) => {
   const userId = req.query.userId as string;
@@ -29,6 +30,7 @@ const update = (req: Request, res: Response) => {
   }
 
   user?.config.update(config);
+  logger.info(`${userId} updated config: ${JSON.stringify(config)}`);
 
   res.send(user?.config.get());
 };

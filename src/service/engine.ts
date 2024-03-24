@@ -7,25 +7,26 @@ import {
   ON_DISPATCHER_TIME,
 } from "../utils/const";
 import { Socket } from "socket.io";
+import { logger } from "../utils/logger";
 
 export class EngineService {
   private timer: NodeJS.Timeout | undefined;
   public status: string = STATUS.OFF;
+  public userId: string | undefined;
 
   constructor(private ws: Socket) {}
 
   public start() {
-    console.log("Starting the engine...");
+    logger.info(`${this.userId} starting the engine...`);
     this.initEngine();
   }
 
   public stop() {
-    console.log("Stopping the engine...");
+    logger.info(`${this.userId} stopping the engine...`);
     this.stopEngine();
   }
 
   private initEngine() {
-    console.log("Initializing the engine...");
     this.ws.emit(
       "message",
       JSON.stringify({
@@ -43,7 +44,6 @@ export class EngineService {
 
     setTimeout(() => {
       this.timer = setInterval(() => {
-        console.log("Engine is running...")
         this.ws.emit(
           "message",
           JSON.stringify({
@@ -59,7 +59,6 @@ export class EngineService {
 
   private stopEngine() {
     clearInterval(this.timer);
-    console.log("Stopping the engine...");
 
     this.ws.emit(
       "message",

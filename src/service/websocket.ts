@@ -4,6 +4,7 @@ import { EngineService } from "./engine";
 import { ConfigService } from "./config";
 import { UserService } from "./user";
 import { MODULE_NAME, TYPES } from "../utils/status";
+import { logger } from "../utils/logger";
 
 export class WebsocketService {
   private socket: Server;
@@ -23,12 +24,14 @@ export class WebsocketService {
           ws,
         });
 
-        console.log(`${userId} connected to server`);
+        this.users.getUser(userId).engine.userId = userId;
+
+        logger.info(`${userId} connected to server`);
 
         ws.on("close", () => {
           const userId = this.users.deleteUser(ws);
 
-          console.log(`${userId} disconnected from the server`);
+          logger.info(`${userId} disconnected from the server`);
         });
 
         ws.emit(
@@ -36,6 +39,8 @@ export class WebsocketService {
           JSON.stringify({ type: TYPES.CONNECTED, module: MODULE_NAME, userId })
         );
       } else {
+        logger.warn(`Max connection reached, disconnecting ${ws.id}`);
+
         ws.disconnect();
       }
     });
