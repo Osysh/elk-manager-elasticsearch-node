@@ -3,6 +3,7 @@ import http from "http";
 import { EngineService } from "./engine";
 import { ConfigService } from "./config";
 import { UserService } from "./user";
+import { MODULE_NAME, TYPES } from "../utils/status";
 
 export class WebsocketService {
   private socket: WebSocket.Server;
@@ -29,6 +30,10 @@ export class WebsocketService {
 
           console.log(`${userId} disconnected from the server`);
         });
+
+        ws.send(
+          JSON.stringify({ type: TYPES.CONNECTED, module: MODULE_NAME, userId })
+        );
       } else {
         ws.close();
       }

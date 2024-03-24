@@ -4,7 +4,7 @@ import http from "http";
 import { WebsocketService } from "./service";
 import { UserService } from "./service/user";
 import { users_middleware, websocket_middleware } from "./middleware";
-import { actionRouter, configRouter, userRouter } from "./routes";
+import { actionRouter, configRouter, statusRouter, userRouter } from "./routes";
 
 const SERVER_PORT: number = parseInt(process.env.SERVER_PORT || "3010", 10);
 const SERVER_HOST: string = process.env.SERVER_HOST || "localhost";
@@ -21,6 +21,7 @@ app.use((req, res, next) => websocket_middleware(req, res, next, socket));
 
 // Routes
 app.use(configRouter);
+app.use(statusRouter);
 app.use(actionRouter);
 app.use(userRouter);
 

@@ -1,10 +1,12 @@
 import WebSocket from "ws";
-
-const MIN_START_LOADING_TIME = 4000;
-const MAX_START_LOADING_TIME = 10000;
-
-const MIN_STOP_LOADING_TIME = 1000;
-const MAX_STOP_LOADING_TIME = 2000;
+import { MODULE_NAME, STATUS, TYPES } from "../utils/status";
+import {
+  MAX_START_LOADING_TIME,
+  MAX_STOP_LOADING_TIME,
+  MIN_START_LOADING_TIME,
+  MIN_STOP_LOADING_TIME,
+  ON_DISPATCHER_TIME,
+} from "../utils/const";
 
 export class EngineService {
   private timer: NodeJS.Timeout | undefined;
@@ -23,7 +25,13 @@ export class EngineService {
 
   private initEngine() {
     console.log("Initializing the engine...");
-    this.ws.send("loading");
+    this.ws.send(
+      JSON.stringify({
+        type: TYPES.ENGINE,
+        module: MODULE_NAME,
+        status: STATUS.LOADING,
+      })
+    );
 
     const loadingTime = this.randomEngineTimeLoader(
       MIN_START_LOADING_TIME,
@@ -32,14 +40,26 @@ export class EngineService {
 
     setTimeout(() => {
       this.timer = setInterval(() => {
-        this.ws.send("on");
-      }, 1000);
+        this.ws.send(
+          JSON.stringify({
+            type: TYPES.ENGINE,
+            module: MODULE_NAME,
+            status: STATUS.ON,
+          })
+        );
+      }, ON_DISPATCHER_TIME);
     }, loadingTime);
   }
 
   private stopEngine() {
-    console.log("Stoppong the engine...");
-    this.ws.send("loading");
+    console.log("Stopping the engine...");
+    this.ws.send(
+      JSON.stringify({
+        type: TYPES.ENGINE,
+        module: MODULE_NAME,
+        status: STATUS.LOADING,
+      })
+    );
 
     const loadingTime = this.randomEngineTimeLoader(
       MIN_STOP_LOADING_TIME,
@@ -48,7 +68,13 @@ export class EngineService {
 
     setTimeout(() => {
       clearInterval(this.timer);
-      this.ws.send("off");
+      this.ws.send(
+        JSON.stringify({
+          type: TYPES.ENGINE,
+          module: MODULE_NAME,
+          status: STATUS.OFF,
+        })
+      );
     }, loadingTime);
   }
 
