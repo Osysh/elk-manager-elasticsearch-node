@@ -10,6 +10,7 @@ import {
 
 export class EngineService {
   private timer: NodeJS.Timeout | undefined;
+  public status: string = STATUS.OFF;
 
   constructor(private ws: WebSocket) {}
 
@@ -32,6 +33,7 @@ export class EngineService {
         status: STATUS.LOADING,
       })
     );
+    this.status = STATUS.LOADING;
 
     const loadingTime = this.randomEngineTimeLoader(
       MIN_START_LOADING_TIME,
@@ -47,6 +49,7 @@ export class EngineService {
             status: STATUS.ON,
           })
         );
+        this.status = STATUS.ON;
       }, ON_DISPATCHER_TIME);
     }, loadingTime);
   }
@@ -60,6 +63,7 @@ export class EngineService {
         status: STATUS.LOADING,
       })
     );
+    this.status = STATUS.LOADING;
 
     const loadingTime = this.randomEngineTimeLoader(
       MIN_STOP_LOADING_TIME,
@@ -75,6 +79,7 @@ export class EngineService {
           status: STATUS.OFF,
         })
       );
+      this.status = STATUS.OFF;
     }, loadingTime);
   }
 
