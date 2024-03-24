@@ -2,7 +2,7 @@ import { Config } from "../types";
 import { JVM_SIZE, PASSWORD, PORT } from "../utils/const";
 
 export class ConfigService {
-  private jvmSize: number = 0;
+  private jvm_size: number = 0;
   private password: string = "";
   private port: number = 3000;
 
@@ -11,14 +11,14 @@ export class ConfigService {
   }
 
   init() {
-    this.jvmSize = JVM_SIZE;
+    this.jvm_size = JVM_SIZE;
     this.password = PASSWORD;
     this.port = PORT;
   }
 
   public get() {
     return {
-      jvmSize: this.jvmSize,
+      jvm_size: this.jvm_size,
       password: this.password,
       port: this.port,
     };

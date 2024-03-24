@@ -8,7 +8,7 @@ export interface User {
 }
 
 export interface Config {
-  jvmSize: number;
+  jvm_size: number;
   password: string;
   port: number;
 }

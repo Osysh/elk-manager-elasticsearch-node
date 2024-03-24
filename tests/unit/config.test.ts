@@ -9,7 +9,7 @@ describe("ConfigService", () => {
   });
 
   test("Initialization sets default values", () => {
-    expect(configService["jvmSize"]).toBe(1);
+    expect(configService["jvm_size"]).toBe(1);
     expect(configService["password"]).toBe("my_password");
     expect(configService["port"]).toBe(9500);
   });
@@ -17,7 +17,7 @@ describe("ConfigService", () => {
   test("Get method returns the current configuration", () => {
     const config = configService.get();
     expect(config).toEqual({
-      jvmSize: 1,
+      jvm_size: 1,
       password: "my_password",
       port: 9500,
     });
@@ -25,7 +25,7 @@ describe("ConfigService", () => {
 
   test("Update method updates configuration properties", () => {
     const newConfig: Config = {
-      jvmSize: 2,
+      jvm_size: 2,
       password: "new_password",
       port: 8080,
     };
@@ -45,11 +45,11 @@ describe("ConfigService", () => {
 
   test("Update method maintains existing properties for partial updates", () => {
     const newConfig: Partial<Config> = {
-      jvmSize: 3,
+      jvm_size: 3,
     };
     configService.update(newConfig);
     expect(configService.get()).toEqual({
-      jvmSize: 3,
+      jvm_size: 3,
       password: "my_password",
       port: 9500,
     });
